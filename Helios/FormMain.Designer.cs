@@ -36,12 +36,14 @@
             this.treeFunctionMenu = new DevComponents.AdvTree.AdvTree();
             this.nodeConnector1 = new DevComponents.AdvTree.NodeConnector();
             this.elementStyle1 = new DevComponents.DotNetBar.ElementStyle();
+            this.sideNavPanel2 = new DevComponents.DotNetBar.Controls.SideNavPanel();
+            this.sideNavPanel3 = new DevComponents.DotNetBar.Controls.SideNavPanel();
             this.sideNavItem1 = new DevComponents.DotNetBar.Controls.SideNavItem();
             this.separator1 = new DevComponents.DotNetBar.Separator();
             this.sideNavItem2 = new DevComponents.DotNetBar.Controls.SideNavItem();
-            this.tabMain = new DevComponents.DotNetBar.SuperTabControl();
             this.sideNavItem3 = new DevComponents.DotNetBar.Controls.SideNavItem();
-            this.sideNavPanel2 = new DevComponents.DotNetBar.Controls.SideNavPanel();
+            this.sideNavItem4 = new DevComponents.DotNetBar.Controls.SideNavItem();
+            this.tabMain = new DevComponents.DotNetBar.SuperTabControl();
             ((System.ComponentModel.ISupportInitialize)(this.barStatus)).BeginInit();
             this.navMain.SuspendLayout();
             this.sideNavPanel1.SuspendLayout();
@@ -73,12 +75,14 @@
             // 
             this.navMain.Controls.Add(this.sideNavPanel1);
             this.navMain.Controls.Add(this.sideNavPanel2);
+            this.navMain.Controls.Add(this.sideNavPanel3);
             this.navMain.Dock = System.Windows.Forms.DockStyle.Left;
             this.navMain.Items.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.sideNavItem1,
             this.separator1,
             this.sideNavItem2,
-            this.sideNavItem3});
+            this.sideNavItem3,
+            this.sideNavItem4});
             this.navMain.Location = new System.Drawing.Point(0, 0);
             this.navMain.Name = "navMain";
             this.navMain.Padding = new System.Windows.Forms.Padding(1);
@@ -126,6 +130,24 @@
             this.elementStyle1.Name = "elementStyle1";
             this.elementStyle1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
+            // sideNavPanel2
+            // 
+            this.sideNavPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sideNavPanel2.Location = new System.Drawing.Point(86, 38);
+            this.sideNavPanel2.Name = "sideNavPanel2";
+            this.sideNavPanel2.Size = new System.Drawing.Size(192, 620);
+            this.sideNavPanel2.TabIndex = 6;
+            this.sideNavPanel2.Visible = false;
+            // 
+            // sideNavPanel3
+            // 
+            this.sideNavPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sideNavPanel3.Location = new System.Drawing.Point(86, 38);
+            this.sideNavPanel3.Name = "sideNavPanel3";
+            this.sideNavPanel3.Size = new System.Drawing.Size(192, 620);
+            this.sideNavPanel3.TabIndex = 10;
+            this.sideNavPanel3.Visible = false;
+            // 
             // sideNavItem1
             // 
             this.sideNavItem1.IsSystemMenu = true;
@@ -148,8 +170,22 @@
             this.sideNavItem2.Checked = true;
             this.sideNavItem2.Name = "sideNavItem2";
             this.sideNavItem2.Panel = this.sideNavPanel1;
-            this.sideNavItem2.Symbol = "";
+            this.sideNavItem2.Symbol = "";
             this.sideNavItem2.Text = "功能";
+            // 
+            // sideNavItem3
+            // 
+            this.sideNavItem3.Name = "sideNavItem3";
+            this.sideNavItem3.Panel = this.sideNavPanel2;
+            this.sideNavItem3.Symbol = "";
+            this.sideNavItem3.Text = "设置";
+            // 
+            // sideNavItem4
+            // 
+            this.sideNavItem4.Name = "sideNavItem4";
+            this.sideNavItem4.Panel = this.sideNavPanel3;
+            this.sideNavItem4.Symbol = "";
+            this.sideNavItem4.Text = "帮助";
             // 
             // tabMain
             // 
@@ -179,22 +215,6 @@
             this.tabMain.TabFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabMain.TabIndex = 2;
             this.tabMain.Text = "tabMain";
-            // 
-            // sideNavItem3
-            // 
-            this.sideNavItem3.Name = "sideNavItem3";
-            this.sideNavItem3.Panel = this.sideNavPanel2;
-            this.sideNavItem3.Symbol = "";
-            this.sideNavItem3.Text = "设置";
-            // 
-            // sideNavPanel2
-            // 
-            this.sideNavPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sideNavPanel2.Location = new System.Drawing.Point(86, 38);
-            this.sideNavPanel2.Name = "sideNavPanel2";
-            this.sideNavPanel2.Size = new System.Drawing.Size(192, 620);
-            this.sideNavPanel2.TabIndex = 6;
-            this.sideNavPanel2.Visible = false;
             // 
             // FormMain
             // 
@@ -234,6 +254,8 @@
         private DevComponents.DotNetBar.ElementStyle elementStyle1;
         private DevComponents.DotNetBar.Controls.SideNavPanel sideNavPanel2;
         private DevComponents.DotNetBar.Controls.SideNavItem sideNavItem3;
+        private DevComponents.DotNetBar.Controls.SideNavPanel sideNavPanel3;
+        private DevComponents.DotNetBar.Controls.SideNavItem sideNavItem4;
     }
 }
 

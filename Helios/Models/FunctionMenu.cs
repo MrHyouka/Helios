@@ -27,8 +27,38 @@ namespace Helios.Models
         /// <summary>
         /// 菜单选项
         /// </summary>
-        /// <param name="MenuName">菜单ID</param>
-        /// <param name="MenuDesc">菜单名称</param>
+        /// <param name="MenuName">菜单名</param>
+        /// <param name="MenuDesc">菜单显示名称</param>
+        /// <param name="ParentMenuName">父菜单ID</param>
+        public FunctionMenu(string MenuName, string MenuDesc, string ParentMenuName)
+        {
+            this.MenuName = MenuName;
+            this.MenuDesc = MenuDesc;
+            this.ParentMenuName = ParentMenuName;
+        }
+
+        /// <summary>
+        /// 菜单选项
+        /// </summary>
+        /// <param name="MenuName">菜单名</param>
+        /// <param name="MenuDesc">菜单显示名称</param>
+        /// <param name="ParentMenuName">父菜单ID</param>
+        /// <param name="AssemblyName">菜单功能所在相对路径文件名</param>
+        /// <param name="FormName">菜单功能对应界面类名</param>
+        public FunctionMenu(string MenuName, string MenuDesc, string ParentMenuName, string AssemblyName, string FormName)
+        {
+            this.MenuName = MenuName;
+            this.MenuDesc = MenuDesc;
+            this.ParentMenuName = ParentMenuName;
+            this.AssemblyName = AssemblyName;
+            this.FormName = FormName;
+        }
+
+        /// <summary>
+        /// 菜单选项
+        /// </summary>
+        /// <param name="MenuName">菜单名</param>
+        /// <param name="MenuDesc">菜单显示名称</param>
         /// <param name="MenuType">菜单类型(M/F)</param>
         /// <param name="MenuIndex">菜单索引</param>
         /// <param name="ParentMenuName">父菜单ID</param>

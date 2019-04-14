@@ -12,6 +12,7 @@ using DevComponents.DotNetBar;
 using DevComponents.AdvTree;
 using System.IO;
 using Helios.Models;
+using Helios.DAO;
 
 namespace Helios
 {
@@ -22,188 +23,177 @@ namespace Helios
             InitializeComponent();
         }
 
+        List<FunctionMenu> customerFunctionMenus = new List<FunctionMenu>();
+        Node customerFunctionNode = new Node();
+
         private void FormMain_Load(object sender, EventArgs e)
         {
             GetFunctionMenuList();
-            AddNode(functionList);
+            SetCustomerFunctionMenu();
         }
 
-        public void OpenFormByReflection(string assemblyName, string formName)
+        #region "初始化主界面功能菜单"
+
+        /// <summary>
+        /// 获取功菜单能列表
+        /// </summary>
+        private void GetFunctionMenuList()
         {
-            Type formType = null;
+            //=======************************************=======//
+            //=======此处代码正式使用时替换成对应的数据源=======//
+            //=======************************************=======//
 
-            //如果AssemblyName与当前本程序一致，则从.exe中获取界面
-            if (assemblyName == Assembly.GetExecutingAssembly().GetName().Name)
-            {
-                formType = Assembly.LoadFrom(assemblyName + ".exe").GetType(formName);
-            }
-            else
-            {
-                formType = Assembly.LoadFrom(assemblyName + ".dll").GetType(formName);
-            }
-
-            if (formType != null)//查看反射是否成功
-            {
-                if (typeof(Form).IsAssignableFrom(formType)) //反射结果是否为窗体Form  关键的判断
-                {
-                    Form form = (Form)Activator.CreateInstance(formType); //创建反射窗体实例  建立窗体的实例
-                    AddFormToTab(form, form.Text, form.Text);
-                }
-                else
-                { MessageBox.Show("指定的类型不能是从Form类型继承", "温馨提示"); }
-            }
-            else
-            { MessageBox.Show("指定的类型不存在", "温馨提示"); }
-        }
-
-        public void AddFormToTab(Form form, string tabName)
-        {
-            AddFormToTab(form, tabName, tabName);
-        }
-
-        public void AddFormToTab(Form form, string tabName, string tabText)
-        {
-            foreach (SuperTabItem tab in this.tabMain.Tabs)
-            {
-                //如果界面已打开，则切换至该界面
-                if (tab.Name == tabName)
-                {
-                    this.tabMain.SelectedTab = tab;
-                    return;
-                }
-            }
-            
-            //配置子窗体必要属性
-            form.TopLevel = false;
-            form.Visible = true;
-            form.FormBorderStyle = FormBorderStyle.None;
-            form.Dock = DockStyle.Fill;
-
-            //新增Tab，并将页面Dock进新页面
-            SuperTabItem tabItem = this.tabMain.CreateTab(tabName);
-            tabItem.Text = tabText;
-            tabItem.Name = tabName;
-            tabItem.AttachedControl.Controls.Add(form);
-
-            //选中新增的Tab
-            this.tabMain.SelectedTab = tabItem;
+            this.customerFunctionMenus = new CustomerFunctionMenu().CustomerFunctionMenus;
         }
 
         /// <summary>
-        /// 通过反射加载界面
+        /// 设置用户功能菜单
         /// </summary>
-        /// <param name="AssemblyName">界面所在文件路径名</param>
-        /// <param name="strName">界面类名</param>
-        public static void CreateFormByReflection(string assemblyName, string formName)
+        private void SetCustomerFunctionMenu()
         {
-            Form doc = GetFormByReflection(assemblyName, formName);
-            doc.Show();
+            this.ConvertFunctionMenuListToNode(customerFunctionMenus, treeFunctionMenu.Nodes);
         }
 
+        /// <summary>
+        /// 将菜单列表转为菜单树，并将菜单对象赋值给成员Tag
+        /// </summary>
+        /// <param name="sourceList">菜单列表</param>
+        /// <param name="targetNodeCollection">菜单Node</param>
+        public void ConvertFunctionMenuListToNode(List<FunctionMenu> sourceList, NodeCollection targetNodeCollection)
+        {
+            for (int i = 0; i < sourceList.Count; i++)
+            {
+                if (sourceList[i].ParentMenuName == null)
+                {
+                    Node parentNode = new Node
+                    {
+                        Text = sourceList[i].MenuDesc,
+                        Tag = sourceList[i]
+                    };
+                    targetNodeCollection.Add(parentNode);
+                    AddChildNode(sourceList, sourceList[i].MenuName, parentNode);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 递归填充子Node
+        /// </summary>
+        /// <param name="sourceList">菜单列表</param>
+        /// <param name="parentName">父Node名</param>
+        /// <param name="parentNode">父Node</param>
+        public void AddChildNode(List<FunctionMenu> sourceList, string parentName, Node parentNode)
+        {
+            for (int i = 0; i < sourceList.Count; i++)
+            {
+                if (sourceList[i].ParentMenuName == parentName)
+                {
+                    Node childNode = new Node
+                    {
+                        Text = sourceList[i].MenuDesc,
+                        Tag = sourceList[i]
+                    };
+                    parentNode.Nodes.Add(childNode);
+                    AddChildNode(sourceList, sourceList[i].MenuName, childNode);
+                }
+            }
+        }
+
+        #endregion
+
+        #region "打开新界面"
+
+        /// <summary>
+        /// 通过反射获取窗体对象
+        /// </summary>
+        /// <param name="assemblyName">窗体所在相对路径文件名</param>
+        /// <param name="formName">窗体类名</param>
+        /// <returns>窗体对象</returns>
         public static Form GetFormByReflection(string assemblyName, string formName)
         {
-            return (Form)Assembly.Load(assemblyName).CreateInstance(formName);
+            try
+            {
+                Type formType = null;
+                if (assemblyName == Assembly.GetExecutingAssembly().GetName().Name) //如果AssemblyName与当前本程序一致，则从.exe文件中获取界面
+                {
+                    formType = Assembly.LoadFrom(assemblyName + ".exe").GetType(formName);
+                }
+                else //否则，从.dll文件中获取界面
+                {
+                    formType = Assembly.LoadFrom(assemblyName + ".dll").GetType(formName);
+                }
+                if (formType != null)//查看反射是否成功
+                {
+                    if (typeof(Form).IsAssignableFrom(formType)) //反射结果是否为窗体Form
+                    {
+                        //return (Form)Assembly.Load(assemblyName).CreateInstance(formName);
+                        return (Form)Activator.CreateInstance(formType); //返回窗体对象实例
+                    }
+                    else
+                    { MessageBox.Show("指定的类型不能是从Form类型继承", "温馨提示"); return null; }
+                }
+                else
+                { MessageBox.Show("指定的类型不存在", "温馨提示"); return null; }
+            }
+            catch { throw; }
         }
 
-        private void buttonX1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 将界面添加至Tab页中
+        /// </summary>
+        /// <param name="form">界面对象</param>
+        /// <param name="tabName">Tab名称</param>
+        /// <param name="tabText">Tab显示页签名称</param>
+        public void AddFormToTab(Form form, string tabName, string tabText)
         {
-            OpenFormByReflection("Helios", "Helios.Forms.FormDemo");
+            try
+            {
+                foreach (SuperTabItem tab in this.tabMain.Tabs)
+                {
+                    //如果界面已打开，则切换至该界面
+                    if (tab.Name == tabName)
+                    {
+                        this.tabMain.SelectedTab = tab;
+                        return;
+                    }
+                }
+                //配置子窗体必要属性
+                form.TopLevel = false;
+                form.Visible = true;
+                form.FormBorderStyle = FormBorderStyle.None;
+                form.Dock = DockStyle.Fill;
+
+                //新增Tab，并将页面Dock进新Tab页
+                SuperTabItem tabItem = this.tabMain.CreateTab(tabName);
+                if (tabText == null || tabText == string.Empty)
+                    tabItem.Text = tabName;
+                else
+                    tabItem.Text = tabText;
+                tabItem.Name = tabName;
+                tabItem.AttachedControl.Controls.Add(form);
+
+                //选中新增的Tab
+                this.tabMain.SelectedTab = tabItem;
+            }
+            catch { throw; }
         }
 
-        private void buttonX2_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 通过功能菜单对象在Tab中打开功能界面
+        /// </summary>
+        /// <param name="function"></param>
+        private void OpenNewTabForm(FunctionMenu function)
         {
-            OpenFormByReflection("Forms", "Forms.Form1");
+            AddFormToTab(GetFormByReflection(function.AssemblyName, function.FormName), function.MenuName, function.MenuDesc);
         }
 
-
-        public void GetFunctionMenuTree()
-        {
-            TreeNode functionTree = new TreeNode();
-            treeFunctionMenu.DataSource = functionTree;
-        }
-        
-        List<FunctionMenu> functionList = new List<FunctionMenu>();
-       
         private void treeFunctionMenu_Click(object sender, EventArgs e)
         {
             if (treeFunctionMenu.SelectedNode == null) return;
             if (treeFunctionMenu.SelectedNode.Nodes.Count != 0) return;
-            //MessageBox.Show("Text:" + treeFunctionMenu.SelectedNode.Text + "\nTag:" + treeFunctionMenu.SelectedNode.Tag);
-            FunctionMenu function = (FunctionMenu)treeFunctionMenu.SelectedNode.Tag;
-            string assemblyName = function.AssemblyName;
-            string formName = function.FormName;
-            OpenFormByReflection(assemblyName, formName);
+            OpenNewTabForm((FunctionMenu)treeFunctionMenu.SelectedNode.Tag);
         }
 
-
-        private void GetFunctionMenuList()
-        {
-            FunctionMenu function = new FunctionMenu
-            {
-                MenuName = "FUNC001",
-                MenuDesc = "FUNC001"
-            };
-            functionList.Add(function);
-
-            function = new FunctionMenu
-            {
-                MenuName = "FUNC002",
-                MenuDesc = "FormDemo",
-                ParentMenuName = "FUNC001",
-                AssemblyName = "Helios",
-                FormName = "Helios.Forms.FormDemo"
-            };
-            functionList.Add(function);
-
-            function = new FunctionMenu
-            {
-                MenuName = "FUNC002",
-                MenuDesc = "Form1",
-                ParentMenuName = "FUNC001",
-                AssemblyName = "Forms",
-                FormName = "Forms.Form1"
-            };
-            functionList.Add(function);
-
-            function = new FunctionMenu
-            {
-                MenuName = "FUNC003",
-                MenuDesc = "FormMenuManager",
-                ParentMenuName = "FUNC001",
-                AssemblyName = "Helios",
-                FormName = "Helios.Forms.FormMenuManager"
-            };
-            functionList.Add(function);
-        }
-
-        public void AddNode(List<FunctionMenu> list)
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].ParentMenuName == null)
-                {
-                    Node pnode = new Node();
-                    pnode.Text = list[i].MenuDesc;
-                    pnode.Tag = list[i];
-                    treeFunctionMenu.Nodes.Add(pnode);
-                    AddChildNode(list,list[i].MenuName, pnode);
-                }
-            }
-        }
-
-        public void AddChildNode(List<FunctionMenu> list ,string pid, Node pnode)
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].ParentMenuName == pid)
-                {
-                    Node cnode = new Node();
-                    cnode.Text = list[i].MenuDesc;
-                    cnode.Tag = list[i];
-                    pnode.Nodes.Add(cnode);
-                    AddChildNode(list,list[i].MenuName, cnode);
-                }
-            }
-        }
+        #endregion
     }
 }
