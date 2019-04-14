@@ -101,7 +101,7 @@ namespace Helios
 
         #endregion
 
-        #region "打开新界面"
+        #region "加载功能界面"
 
         /// <summary>
         /// 通过反射获取窗体对象
