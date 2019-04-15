@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="DevComponents.DotNetBar2, Version=14.0.0.15, Culture=neutral, PublicKeyToken=c39c3242a43eee2b, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\CustomerFunctionMenu.cs" />
+    <Compile Include="DAO\IDBHelper.cs" />
+    <Compile Include="DAO\MySqlHelper.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
