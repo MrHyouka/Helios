@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Helios.Models;
 
-namespace Helios.DAO
+namespace Helios.DAL
 {
     class CustomerFunctionMenu
     {
@@ -13,7 +13,7 @@ namespace Helios.DAO
             new FunctionMenu("FUNCM001","数据录入",null),
             new FunctionMenu("FUNCF001","界面配置",null,"Helios","Helios.Forms.FormMenuManager"),
             new FunctionMenu("FUNCF002","内部测试界面","FUNCM001","Helios","Helios.Forms.FormDemo"),
-            new FunctionMenu("FUNCF003","外部测试界面","FUNCM001","Forms","Forms.Form1")
+            new FunctionMenu("FUNCF003","外部测试界面","FUNCM001","UI","UI.Form1")
         };
 
         public List<FunctionMenu> CustomerFunctionMenus { get => customerFunctionMenu; set => customerFunctionMenu = value; }

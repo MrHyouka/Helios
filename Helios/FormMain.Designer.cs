@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.barStatus = new DevComponents.DotNetBar.Bar();
             this.styleManager1 = new DevComponents.DotNetBar.StyleManager(this.components);
             this.navMain = new DevComponents.DotNetBar.Controls.SideNav();
@@ -226,8 +227,10 @@
             this.Controls.Add(this.barStatus);
             this.DoubleBuffered = true;
             this.EnableGlass = false;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Helios";
             this.Load += new System.EventHandler(this.FormMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.barStatus)).EndInit();
             this.navMain.ResumeLayout(false);

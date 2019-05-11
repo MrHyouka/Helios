@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.styleManager1 = new DevComponents.DotNetBar.StyleManager(this.components);
             this.expMenuList = new DevComponents.DotNetBar.ExpandablePanel();
-            this.pnlMenuManager = new System.Windows.Forms.Panel();
             this.listViewEx1 = new DevComponents.DotNetBar.Controls.ListViewEx();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -39,6 +38,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.cmbMenuType = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.pnlMenuManager = new System.Windows.Forms.Panel();
             this.expMenuList.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -77,14 +77,6 @@
             this.expMenuList.TitleStyle.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
             this.expMenuList.TitleStyle.GradientAngle = 90;
             this.expMenuList.TitleText = "菜单列表";
-            // 
-            // pnlMenuManager
-            // 
-            this.pnlMenuManager.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMenuManager.Location = new System.Drawing.Point(286, 0);
-            this.pnlMenuManager.Name = "pnlMenuManager";
-            this.pnlMenuManager.Size = new System.Drawing.Size(801, 686);
-            this.pnlMenuManager.TabIndex = 22;
             // 
             // listViewEx1
             // 
@@ -156,6 +148,14 @@
             this.labelX1.TabIndex = 1;
             this.labelX1.Text = "菜单类型";
             // 
+            // pnlMenuManager
+            // 
+            this.pnlMenuManager.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMenuManager.Location = new System.Drawing.Point(286, 0);
+            this.pnlMenuManager.Name = "pnlMenuManager";
+            this.pnlMenuManager.Size = new System.Drawing.Size(801, 686);
+            this.pnlMenuManager.TabIndex = 22;
+            // 
             // FormMenuManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -165,6 +165,7 @@
             this.Controls.Add(this.expMenuList);
             this.Name = "FormMenuManager";
             this.Text = "FormMenuManager";
+            this.Load += new System.EventHandler(this.FormMenuManager_Load);
             this.expMenuList.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);

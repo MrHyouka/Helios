@@ -5,22 +5,15 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Helios.DAL;
 
-namespace Helios.Forms
+namespace UI
 {
-    public partial class FormMenuManager : BaseForm
+    public partial class Form1 : Form
     {
-        public FormMenuManager()
+        public Form1()
         {
             InitializeComponent();
-        }
-
-        private void FormMenuManager_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

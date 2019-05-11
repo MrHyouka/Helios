@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Helios.DAO
+namespace Helios.DAL
 {
     class MySqlHelper : IDBHelper
     {
